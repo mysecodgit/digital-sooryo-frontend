@@ -1,0 +1,65 @@
+// Digital Sooryo dashboard — subtle motion and depth
+.ds-dashboard {
+  --ds-accent: #556ee6;
+  --ds-accent-soft: rgba(85, 110, 230, 0.12);
+  --ds-teal: #34c38f;
+  --ds-teal-soft: rgba(52, 195, 143, 0.12);
+  --ds-warm: #f1b44c;
+  --ds-warm-soft: rgba(241, 180, 76, 0.15);
+  --ds-rose: #f46a6a;
+  --ds-rose-soft: rgba(244, 106, 106, 0.12);
+
+  .ds-hero {
+    background: linear-gradient(120deg, #556ee6 0%, #74788d 45%, #34c38f 100%);
+    border-radius: 0.5rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ds-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 20% 120%,
+      rgba(255, 255, 255, 0.2) 0%,
+      transparent 55%
+    );
+    pointer-events: none;
+  }
+
+  .ds-stat-card {
+    border: none;
+    border-radius: 0.5rem;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    cursor: default;
+  }
+
+  .ds-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.85rem 2rem rgba(18, 38, 63, 0.12) !important;
+  }
+
+  .ds-stat-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+  }
+
+  .ds-chart-wrap {
+    min-height: 280px;
+  }
+
+  .ds-recent-row {
+    transition: background-color 0.15s ease;
+  }
+
+  .ds-recent-row:hover {
+    background-color: rgba(85, 110, 230, 0.06);
+  }
+}
