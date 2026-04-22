@@ -165,6 +165,13 @@ const SidebarContent = (props) => {
                 <span>{props.t("QR codes")}</span>
               </Link>
             </li>
+
+            <li>
+              <Link to="/claims" className=" ">
+                <i className="bx bx-list-check"></i>
+                <span>{props.t("Claims")}</span>
+              </Link>
+            </li>
           </ul>
         </div>
       </SimpleBar>

@@ -31,11 +31,11 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5075
 function apiErrorMessage(err) {
   const msg = err?.response?.data?.error;
   if (typeof msg === "string" && msg.trim() !== "") return msg;
-  return err?.message || "Something went wrong. Please try again.";
+  return err?.message || "Wax khalad ah ayaa dhacay. Fadlan mar kale isku day.";
 }
 
 const Claim = () => {
-  document.title = "Claim sooryo";
+  document.title = "Dalbo Sooryo";
 
   const [searchParams] = useSearchParams();
   const parsed = useMemo(
@@ -87,9 +87,9 @@ const Claim = () => {
     validationSchema: Yup.object({
       phone: Yup.string()
         .trim()
-        .min(7, "Enter a valid phone number")
-        .max(40, "Phone number is too long")
-        .required("Phone number is required"),
+        .min(7, "Geli lambar sax ah")
+        .max(40, "Lambarku aad buu u dheer yahay")
+        .required("Lambarka telefoonka waa waajib"),
     }),
     onSubmit: async (_values, { validateForm, setTouched }) => {
       const errors = await validateForm();
@@ -121,10 +121,12 @@ const Claim = () => {
       setOutcome({
         open: true,
         variant: "success",
-        title: "Claim successful",
-        message: `Your claim is recorded. Serial: ${result?.serial_number ?? qrInfo?.serial_number ?? "—"}. Amount: ${
-          amt != null && !Number.isNaN(amt) ? amt : "—"
-        }. We will use phone ${result?.phone ?? form.values.phone.trim()}.`,
+        title: "Dalabka waa guuleystay",
+        message: `Dalabkaaga waa la diiwaangeliyey. Serial: ${
+          result?.serial_number ?? qrInfo?.serial_number ?? "—"
+        }. Lacagta: ${amt != null && !Number.isNaN(amt) ? amt : "—"}. Telefoon: ${
+          result?.phone ?? form.values.phone.trim()
+        }.`,
       });
       form.resetForm();
     } catch (err) {
@@ -132,7 +134,7 @@ const Claim = () => {
       setOutcome({
         open: true,
         variant: "error",
-        title: "Claim failed",
+        title: "Dalabku wuu fashilmay",
         message: apiErrorMessage(err),
       });
     } finally {
@@ -148,10 +150,12 @@ const Claim = () => {
             <Col md={8} lg={6} xl={5}>
               <Card>
                 <CardBody className="p-4">
-                  <h4 className="mb-3">Invalid or incomplete link</h4>
+                  <h4 className="mb-3" style={{ fontSize: 26, lineHeight: 1.2 }}>
+                    Link-ga ma saxna ama wuu dhiman yahay
+                  </h4>
                   <p className="text-muted mb-0">
-                    This QR code link is missing information. Please scan a
-                    valid code from the event.
+                    Link-ga QR-kan wuxuu ka maqan yahay xog. Fadlan mar kale iska
+                    scan garee QR sax ah oo ka yimid xafladda.
                   </p>
                 </CardBody>
               </Card>
@@ -168,21 +172,29 @@ const Claim = () => {
         <Row className="justify-content-center">
           <Col md={8} lg={6} xl={5}>
             <Card>
-              <CardBody className="p-4">
-                <h4 className="text-center mb-2">Claim your sooryo</h4>
-                <p className="text-muted text-center small mb-4">
-                  Enter your phone number to claim this QR code.
+              <CardBody className="p-4" style={{ fontSize: 18 }}>
+                <h4 className="text-center mb-2" style={{ fontSize: 30, lineHeight: 1.15 }}>
+                  Dalbo Sooryo-gaaga
+                </h4>
+                <p className="text-muted text-center mb-4" style={{ fontSize: 18 }}>
+                  Geli lambarkaaga si aad u dalbato QR-kan.
                 </p>
 
-                <div className="border rounded p-3 mb-4 bg-light">
+                <div className="border rounded p-3 mb-4 bg-light" style={{ fontSize: 18 }}>
                   <Row className="g-2">
                     <Col xs={12}>
-                      <span className="text-muted small">Serial</span>
-                      <div className="fw-semibold">{loadingQr ? "…" : qrInfo?.serial_number || "—"}</div>
+                      <span className="text-muted" style={{ fontSize: 14 }}>
+                        Serial
+                      </span>
+                      <div className="fw-semibold" style={{ fontSize: 22 }}>
+                        {loadingQr ? "…" : qrInfo?.serial_number || "—"}
+                      </div>
                     </Col>
                     <Col xs={12}>
-                      <span className="text-muted small">Amount</span>
-                      <div className="fw-semibold fs-5 text-primary">
+                      <span className="text-muted" style={{ fontSize: 14 }}>
+                        Lacagta
+                      </span>
+                      <div className="fw-semibold text-primary" style={{ fontSize: 28, lineHeight: 1.1 }}>
                         {!loadingQr &&
                         qrInfo?.amount !== undefined &&
                         qrInfo?.amount !== null &&
@@ -193,10 +205,6 @@ const Claim = () => {
                           : "—"}
                       </div>
                     </Col>
-                    <Col xs={12}>
-                      <span className="text-muted small">Status</span>
-                      <div className="fw-semibold">{loadingQr ? "…" : qrInfo?.status || "—"}</div>
-                    </Col>
                   </Row>
                 </div>
 
@@ -206,8 +214,27 @@ const Claim = () => {
                     form.handleSubmit();
                   }}
                 >
+                  <style>{`
+                    .claim-green-btn {
+                      background: #0b5b46 !important;
+                      border-color: #0b5b46 !important;
+                      color: #ffffff !important;
+                    }
+                    .claim-green-btn:hover,
+                    .claim-green-btn:focus {
+                      background: #064436 !important;
+                      border-color: #064436 !important;
+                      color: #ffffff !important;
+                    }
+                    .claim-green-btn:active {
+                      background: #053a2f !important;
+                      border-color: #053a2f !important;
+                      color: #ffffff !important;
+                    }
+                  `}</style>
+
                   <div className="mb-3">
-                    <Label>Phone number</Label>
+                    <Label style={{ fontSize: 18, fontWeight: 600 }}>Lambarka telefoonka</Label>
                     <Input
                       name="phone"
                       type="tel"
@@ -218,14 +245,22 @@ const Claim = () => {
                       onBlur={form.handleBlur}
                       value={form.values.phone}
                       invalid={form.touched.phone && !!form.errors.phone}
+                      style={{ fontSize: 20, padding: "14px 14px" }}
                     />
                     {form.touched.phone && form.errors.phone ? (
-                      <FormFeedback type="invalid">{form.errors.phone}</FormFeedback>
+                      <FormFeedback type="invalid" style={{ fontSize: 16 }}>
+                        {form.errors.phone}
+                      </FormFeedback>
                     ) : null}
                   </div>
 
-                  <Button color="primary" className="w-100" type="submit">
-                    Claim
+                  <Button
+                    color="primary"
+                    type="submit"
+                    className="w-100 claim-green-btn"
+                    style={{ fontSize: 22, padding: "12px 16px", fontWeight: 700 }}
+                  >
+                    Dalbo
                   </Button>
                 </Form>
               </CardBody>
@@ -236,19 +271,24 @@ const Claim = () => {
 
       <Modal isOpen={confirmOpen} toggle={() => !submitting && setConfirmOpen(false)}>
         <ModalHeader toggle={() => !submitting && setConfirmOpen(false)}>
-          Confirm claim
+          Xaqiiji dalabka
         </ModalHeader>
         <ModalBody>
-          <p className="mb-2">Are you sure you want to claim this sooryo?</p>
-          <ul className="text-muted small mb-0">
+          <p className="mb-2" style={{ fontSize: 18 }}>
+            Ma hubtaa inaad rabto inaad dalbato sooryadan?
+          </p>
+          <ul className="text-muted mb-0" style={{ fontSize: 18, lineHeight: 1.6 }}>
             <li>
-              <strong>Phone:</strong> {form.values.phone.trim() || "—"}
+              <strong>Telefoon:</strong>{" "}
+              <span style={{ fontSize: 22, fontWeight: 800, color: "#0f172a" }}>
+                {form.values.phone.trim() || "—"}
+              </span>
             </li>
             <li>
               <strong>Serial:</strong> {loadingQr ? "…" : qrInfo?.serial_number || "—"}
             </li>
             <li>
-              <strong>Amount:</strong>{" "}
+              <strong>Lacagta:</strong>{" "}
               {!loadingQr &&
               qrInfo?.amount !== undefined &&
               qrInfo?.amount !== null &&
@@ -266,11 +306,18 @@ const Claim = () => {
             type="button"
             disabled={submitting}
             onClick={() => setConfirmOpen(false)}
+            style={{ fontSize: 18, padding: "10px 14px" }}
           >
-            Cancel
+            Ka-noqo
           </Button>
-          <Button color="primary" type="button" disabled={submitting} onClick={performClaim}>
-            {submitting ? "Submitting…" : "Yes, claim now"}
+          <Button
+            color="primary"
+            type="button"
+            disabled={submitting}
+            onClick={performClaim}
+            style={{ fontSize: 18, padding: "10px 14px", fontWeight: 700 }}
+          >
+            {submitting ? "Wuu socda..." : "Haa, dalbo hadda"}
           </Button>
         </ModalFooter>
       </Modal>
@@ -289,7 +336,7 @@ const Claim = () => {
         </ModalBody>
         <ModalFooter className="border-0">
           <Button color="primary" type="button" onClick={closeOutcome}>
-            Close
+            Xir
           </Button>
         </ModalFooter>
       </Modal>

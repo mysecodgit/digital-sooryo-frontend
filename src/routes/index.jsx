@@ -17,6 +17,7 @@ import Vendors from "../pages/Vendors";
 import Customers from "../pages/Customers";
 import Weddings from "../pages/Weddings";
 import QrCodes from "../pages/QrCodes";
+import Claims from "../pages/Claims";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -26,6 +27,7 @@ const authProtectedRoutes = [
   { path: "/vendors", component: <Vendors /> },
   { path: "/customers", component: <Customers /> },
   { path: "/qr-codes", component: <QrCodes /> },
+  { path: "/claims", component: <Claims /> },
   { path: "/weddings", component: <Weddings /> },
 
   // this route should be at the end of all other routes
