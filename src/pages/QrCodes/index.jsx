@@ -45,6 +45,7 @@ function normalizeQrRow(raw) {
   return {
     id: raw.id,
     serial_number: String(raw.serial_number ?? ""),
+    short_code: String(raw.short_code ?? ""),
     wedding_id:
       raw.wedding_id !== undefined && raw.wedding_id !== null && raw.wedding_id !== ""
         ? Number(raw.wedding_id)
@@ -453,6 +454,8 @@ const QrCodes = () => {
     <React.Fragment>
       <div className="page-content">
         <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
           /* Print-only master cards */
           @page { size: A4; margin: 10mm; }
           #qr-master-print-root { display: none; }
@@ -460,27 +463,22 @@ const QrCodes = () => {
           .ms-grid {
             display: grid;
             grid-template-columns: repeat(2, 85.6mm);
-            gap: 6mm;
+            gap: 10mm;
             align-content: start;
             justify-content: start;
             padding: 0;
           }
           .ms-card {
-            width: 85.6mm;
+            width: 88.6mm;
             height: 54mm;
-            border-radius: 4mm;
+            border-radius: 0mm;
             padding: 4.2mm 4.2mm 3.8mm;
             overflow: hidden;
-            /* Mostly-white background to reduce ink usage */
-            background:
-              linear-gradient(110deg,
-                #ffffff 0%,
-                #ffffff 62%,
-                #0b5b46 62%,
-                #064436 100%);
-            border: 0.25mm solid rgba(11, 91, 70, 0.85);
-            color: #0f172a;
-            font-family: "Segoe UI", Arial, sans-serif;
+            /* Full green gradient background */
+            background: linear-gradient(135deg, #0b5b46 0%, #0a5a45 40%, #064436 100%);
+            border: 0.25mm solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            font-family: "Poppins", "Segoe UI", Arial, sans-serif;
             position: relative;
             break-inside: avoid;
             page-break-inside: avoid;
@@ -490,34 +488,34 @@ const QrCodes = () => {
           .ms-row { gap: 3.2mm; }
           .ms-right { width: 27mm; flex: 0 0 27mm; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start; gap: 2mm; padding-right: 2.4mm; padding-top: 0.2mm; }
 
-          .ms-brand { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 600; letter-spacing: 0.2mm; font-size: 11pt; color: rgba(15, 23, 42, 0.9); }
-          .ms-brand-line { margin-left: 2mm; display: inline-block; width: 12mm; height: 0.4mm; background: rgba(15, 23, 42, 0.2); vertical-align: middle; }
+          .ms-brand { font-weight: 700; letter-spacing: 0.1mm; font-size: 18.5pt; color: rgba(255,255,255,0.98); }
+          .ms-brand-line { display: none; }
 
-          .ms-balance-label { margin-top: 6mm; font-size: 6pt; letter-spacing: 0.55mm; text-transform: uppercase; color: rgba(15, 23, 42, 0.55); }
+          .ms-balance-label { margin-top: 4mm; font-size: 6pt; letter-spacing: 0.55mm; text-transform: uppercase; color: rgba(255,255,255,0.78); }
           .ms-amount { margin-top: 1.4mm; display: flex; align-items: flex-end; gap: 0.7mm; line-height: 1; }
-          .ms-currency { font-size: 18pt; font-weight: 750; color: rgba(15, 23, 42, 0.92); }
-          .ms-major { font-size: 28pt; font-weight: 850; letter-spacing: -0.35mm; color: rgba(15, 23, 42, 0.95); }
-          .ms-minor { font-size: 12pt; font-weight: 750; padding-bottom: 1.1mm; color: rgba(15, 23, 42, 0.55); }
+          .ms-currency { font-size: 18pt; font-weight: 750; color: rgba(255,255,255,0.98); }
+          .ms-major { font-size: 28pt; font-weight: 850; letter-spacing: -0.35mm; color: rgba(255,255,255,1); }
+          .ms-minor { font-size: 12pt; font-weight: 750; padding-bottom: 1.1mm; color: rgba(255,255,255,0.78); }
 
-          .ms-divider { margin-top: 3.2mm; height: 0.35mm; background: rgba(15, 23, 42, 0.12); width: 100%; }
+          .ms-divider { margin-top: 3.2mm; height: 0.35mm; background: rgba(255,255,255,0.22); width: 100%; }
 
           .ms-bottom { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 7mm; padding-top: 1.3mm; }
           .ms-bottom-block { min-width: 0; flex: 1 1 0; }
           .ms-bottom-block:last-child { text-align: left; }
-          .ms-bottom-label { font-size: 5.8pt; letter-spacing: 0.55mm; text-transform: uppercase; color: rgba(15, 23, 42, 0.55); }
-          .ms-bottom-value { margin-top: 0.9mm; font-size: 11pt; font-weight: 850; letter-spacing: 0.15mm; color: rgba(15, 23, 42, 0.92); }
+          .ms-bottom-label { font-size: 5.8pt; letter-spacing: 0.55mm; text-transform: uppercase; color: rgba(255,255,255,0.78); }
+          .ms-bottom-value { margin-top: 0.9mm; font-size: 11pt; font-weight: 850; letter-spacing: 0.15mm; color: rgba(255,255,255,0.98); }
 
           .ms-qr-wrap {
-            width: 24.5mm;
-            height: 24.5mm;
-            border-radius: 3.2mm;
-            background: rgba(255,255,255,0.92);
-            padding: 1.8mm;
-            border: 0.25mm solid rgba(15, 23, 42, 0.35);
+            width: 34mm;
+            height: 34mm;
+            border-radius: 6mm;
+            background: rgba(255,255,255,1);
+            padding: 1mm;
+            border: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 30px;
+            box-shadow: 0 1.1mm 3.2mm rgba(0,0,0,0.26);
           }
           .ms-qr { width: 100%; height: 100%; object-fit: contain; }
           .ms-chip {
@@ -547,12 +545,12 @@ const QrCodes = () => {
             <div className="ms-grid">
               {selectedRowsForPrint.map((qr) => {
                 const apiBase = (getSooryoApiBaseUrl() || "").replace(/\/$/, "");
-                const qrSrc = `${apiBase}/v1/public/qr/${encodeURIComponent(qr.token)}/image.png`;
-                const serial = String(qr.serial_number || "").trim();
+                const qrSrc = `${apiBase}/v1/public/qr/${encodeURIComponent(qr.token)}/image.svg`;
+                const displayCode = String(qr.short_code || "").trim() || String(qr.serial_number || "").trim();
                 const amountText = formatMoneyAmount(qr.amount);
                 const [majorRaw, minorRaw] = String(amountText).split(".");
                 const major = majorRaw || amountText;
-                const minor = minorRaw ? `.${minorRaw}` : "";
+                const minor = minorRaw && minorRaw !== "00" ? `.${minorRaw}` : "";
                 return (
                   <div className="ms-card" key={`ms-${qr.id}`}>
                     <div className="ms-row">
@@ -573,11 +571,11 @@ const QrCodes = () => {
                         <div className="ms-bottom">
                           <div className="ms-bottom-block">
                             <div className="ms-bottom-label">CONTACT US ON</div>
-                            <div className="ms-bottom-value">5050</div>
+                            <div className="ms-bottom-value">619928099</div>
                           </div>
                           <div className="ms-bottom-block">
                             <div className="ms-bottom-label">SERIAL NUMBER</div>
-                            <div className="ms-bottom-value">{serial || "—"}</div>
+                            <div className="ms-bottom-value">{displayCode || "—"}</div>
                           </div>
                         </div>
                       </div>

@@ -166,6 +166,9 @@ const Claim = () => {
     );
   }
 
+  const status = String(qrInfo?.status || "").toLowerCase();
+  const notActive = !loadingQr && qrInfo && status !== "" && status !== "active";
+
   return (
     <div className="account-pages my-5 pt-5">
       <Container>
@@ -173,40 +176,59 @@ const Claim = () => {
           <Col md={8} lg={6} xl={5}>
             <Card>
               <CardBody className="p-4" style={{ fontSize: 18 }}>
-                <h4 className="text-center mb-2" style={{ fontSize: 30, lineHeight: 1.15 }}>
-                  Dalbo Sooryo-gaaga
-                </h4>
-                <p className="text-muted text-center mb-4" style={{ fontSize: 18 }}>
-                  Geli lambarkaaga si aad u dalbato QR-kan.
-                </p>
+                {notActive ? (
+                  <div className="text-center">
+                    <i
+                      className="bx bx-x-circle text-danger"
+                      style={{ fontSize: 74, lineHeight: 1 }}
+                      aria-hidden="true"
+                    />
+                    <h5 className="mt-3 mb-2" style={{ fontSize: 22, lineHeight: 1.2 }}>
+                      Waan ka xunnahay
+                    </h5>
+                    <p className="text-muted mb-0" style={{ fontSize: 18, lineHeight: 1.55 }}>
+                      QR-kan hadda ma shaqeynayo. Fadlan mar kale isku day marka uu firfircoon noqdo.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <h4 className="text-center mb-2" style={{ fontSize: 30, lineHeight: 1.15 }}>
+                      Dalbo Sooryo-gaaga
+                    </h4>
+                    <p className="text-muted text-center mb-4" style={{ fontSize: 18 }}>
+                      Geli lambarkaaga si aad u dalbato QR-kan.
+                    </p>
 
-                <div className="border rounded p-3 mb-4 bg-light" style={{ fontSize: 18 }}>
-                  <Row className="g-2">
-                    <Col xs={12}>
-                      <span className="text-muted" style={{ fontSize: 14 }}>
-                        Serial
-                      </span>
-                      <div className="fw-semibold" style={{ fontSize: 22 }}>
-                        {loadingQr ? "…" : qrInfo?.serial_number || "—"}
-                      </div>
-                    </Col>
-                    <Col xs={12}>
-                      <span className="text-muted" style={{ fontSize: 14 }}>
-                        Lacagta
-                      </span>
-                      <div className="fw-semibold text-primary" style={{ fontSize: 28, lineHeight: 1.1 }}>
-                        {!loadingQr &&
-                        qrInfo?.amount !== undefined &&
-                        qrInfo?.amount !== null &&
-                        !Number.isNaN(Number(qrInfo.amount))
-                          ? `${Number(qrInfo.amount)}`
-                          : loadingQr
-                          ? "…"
-                          : "—"}
-                      </div>
-                    </Col>
-                  </Row>
-                </div>
+                    <div className="border rounded p-3 mb-4 bg-light" style={{ fontSize: 18 }}>
+                      <Row className="g-2">
+                        <Col xs={12}>
+                          <span className="text-muted" style={{ fontSize: 14 }}>
+                            Serial
+                          </span>
+                          <div className="fw-semibold" style={{ fontSize: 22 }}>
+                            {loadingQr ? "…" : qrInfo?.serial_number || "—"}
+                          </div>
+                        </Col>
+                        <Col xs={12}>
+                          <span className="text-muted" style={{ fontSize: 14 }}>
+                            Lacagta
+                          </span>
+                          <div
+                            className="fw-semibold text-primary"
+                            style={{ fontSize: 28, lineHeight: 1.1 }}
+                          >
+                            {!loadingQr &&
+                            qrInfo?.amount !== undefined &&
+                            qrInfo?.amount !== null &&
+                            !Number.isNaN(Number(qrInfo.amount))
+                              ? `${Number(qrInfo.amount)}`
+                              : loadingQr
+                              ? "…"
+                              : "—"}
+                          </div>
+                        </Col>
+                      </Row>
+                    </div>
 
                 <Form
                   onSubmit={(e) => {
@@ -263,6 +285,8 @@ const Claim = () => {
                     Dalbo
                   </Button>
                 </Form>
+                  </>
+                )}
               </CardBody>
             </Card>
           </Col>
