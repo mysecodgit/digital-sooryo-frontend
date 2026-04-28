@@ -89,7 +89,7 @@ const Claim = () => {
         .trim()
         .min(7, "Geli lambar sax ah")
         .max(40, "Lambarku aad buu u dheer yahay")
-        .required("Lambarka telefoonka waa waajib"),
+        .required("Fadlan geli lambarkaaga"),
     }),
     onSubmit: async (_values, { validateForm, setTouched }) => {
       const errors = await validateForm();
@@ -122,11 +122,9 @@ const Claim = () => {
         open: true,
         variant: "success",
         title: "Dalabka waa guuleystay",
-        message: `Dalabkaaga waa la diiwaangeliyey. Serial: ${
-          result?.serial_number ?? qrInfo?.serial_number ?? "—"
-        }. Lacagta: ${amt != null && !Number.isNaN(amt) ? amt : "—"}. Telefoon: ${
-          result?.phone ?? form.values.phone.trim()
-        }.`,
+        message: `Waa ku guuleysatay inaa dalbato sooryadan
+           oo qiimaheedu yahay: ${amt != null && !Number.isNaN(amt) ? amt : "—"}. waxaa kugu so direynaa telkaan: ${result?.phone ?? form.values.phone.trim()
+          }.`,
       });
       form.resetForm();
     } catch (err) {
@@ -187,56 +185,25 @@ const Claim = () => {
                       Waan ka xunnahay
                     </h5>
                     <p className="text-muted mb-0" style={{ fontSize: 18, lineHeight: 1.55 }}>
-                      QR-kan hadda ma shaqeynayo. Fadlan mar kale isku day marka uu firfircoon noqdo.
+                      QR-kan hadda ma shaqeynayo. Fadlan mar kale isku day marka uu active noqdo.
                     </p>
                   </div>
                 ) : (
                   <>
                     <h4 className="text-center mb-2" style={{ fontSize: 30, lineHeight: 1.15 }}>
-                      Dalbo Sooryo-gaaga
+                      Dalbo Sooryo
                     </h4>
                     <p className="text-muted text-center mb-4" style={{ fontSize: 18 }}>
-                      Geli lambarkaaga si aad u dalbato QR-kan.
+                      Geli lambarkaaga
                     </p>
 
-                    <div className="border rounded p-3 mb-4 bg-light" style={{ fontSize: 18 }}>
-                      <Row className="g-2">
-                        <Col xs={12}>
-                          <span className="text-muted" style={{ fontSize: 14 }}>
-                            Serial
-                          </span>
-                          <div className="fw-semibold" style={{ fontSize: 22 }}>
-                            {loadingQr ? "…" : qrInfo?.serial_number || "—"}
-                          </div>
-                        </Col>
-                        <Col xs={12}>
-                          <span className="text-muted" style={{ fontSize: 14 }}>
-                            Lacagta
-                          </span>
-                          <div
-                            className="fw-semibold text-primary"
-                            style={{ fontSize: 28, lineHeight: 1.1 }}
-                          >
-                            {!loadingQr &&
-                            qrInfo?.amount !== undefined &&
-                            qrInfo?.amount !== null &&
-                            !Number.isNaN(Number(qrInfo.amount))
-                              ? `${Number(qrInfo.amount)}`
-                              : loadingQr
-                              ? "…"
-                              : "—"}
-                          </div>
-                        </Col>
-                      </Row>
-                    </div>
-
-                <Form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    form.handleSubmit();
-                  }}
-                >
-                  <style>{`
+                    <Form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        form.handleSubmit();
+                      }}
+                    >
+                      <style>{`
                     .claim-green-btn {
                       background: #0b5b46 !important;
                       border-color: #0b5b46 !important;
@@ -255,36 +222,69 @@ const Claim = () => {
                     }
                   `}</style>
 
-                  <div className="mb-3">
-                    <Label style={{ fontSize: 18, fontWeight: 600 }}>Lambarka telefoonka</Label>
-                    <Input
-                      name="phone"
-                      type="tel"
-                      inputMode="tel"
-                      autoComplete="tel"
-                      placeholder="+252 ..."
-                      onChange={form.handleChange}
-                      onBlur={form.handleBlur}
-                      value={form.values.phone}
-                      invalid={form.touched.phone && !!form.errors.phone}
-                      style={{ fontSize: 20, padding: "14px 14px" }}
-                    />
-                    {form.touched.phone && form.errors.phone ? (
-                      <FormFeedback type="invalid" style={{ fontSize: 16 }}>
-                        {form.errors.phone}
-                      </FormFeedback>
-                    ) : null}
-                  </div>
+                      <div className="mb-3">
+                        <Label style={{ fontSize: 18, fontWeight: 600 }}>Lambarka telefoonka</Label>
+                        <Input
+                          name="phone"
+                          type="tel"
+                          inputMode="tel"
+                          autoComplete="tel"
+                          placeholder="+252 ..."
+                          onChange={form.handleChange}
+                          onBlur={form.handleBlur}
+                          value={form.values.phone}
+                          invalid={form.touched.phone && !!form.errors.phone}
+                          style={{ fontSize: 20, padding: "14px 14px" }}
+                        />
+                        {form.touched.phone && form.errors.phone ? (
+                          <FormFeedback type="invalid" style={{ fontSize: 16 }}>
+                            {form.errors.phone}
+                          </FormFeedback>
+                        ) : null}
+                      </div>
 
-                  <Button
-                    color="primary"
-                    type="submit"
-                    className="w-100 claim-green-btn"
-                    style={{ fontSize: 22, padding: "12px 16px", fontWeight: 700 }}
-                  >
-                    Dalbo
-                  </Button>
-                </Form>
+                      <Button
+                        color="primary"
+                        type="submit"
+                        className="w-100 claim-green-btn"
+                        style={{ fontSize: 22, padding: "12px 16px", fontWeight: 700 }}
+                      >
+                        Dalbo
+                      </Button>
+                    </Form>
+
+                    <div className="border rounded p-3 mb-4 mt-4 bg-light" style={{ fontSize: 18 }}>
+                      <Row className="g-2">
+                        <Col xs={12}>
+                          <span className="text-muted" style={{ fontSize: 14 }}>
+                            Code
+                          </span>
+                          <div className="fw-semibold" style={{ fontSize: 22 }}>
+                            {loadingQr ? "…" : qrInfo?.serial_number || "—"}
+                          </div>
+                        </Col>
+                        <Col xs={12}>
+                          <span className="text-muted" style={{ fontSize: 14 }}>
+                            Lacagta
+                          </span>
+                          <div
+                            className="fw-semibold text-primary"
+                            style={{ fontSize: 28, lineHeight: 1.1 }}
+                          >
+                            {!loadingQr &&
+                              qrInfo?.amount !== undefined &&
+                              qrInfo?.amount !== null &&
+                              !Number.isNaN(Number(qrInfo.amount))
+                              ? `${Number(qrInfo.amount)}`
+                              : loadingQr
+                                ? "…"
+                                : "—"}
+                          </div>
+                        </Col>
+                      </Row>
+                    </div>
+
+                  
                   </>
                 )}
               </CardBody>
@@ -299,7 +299,7 @@ const Claim = () => {
         </ModalHeader>
         <ModalBody>
           <p className="mb-2" style={{ fontSize: 18 }}>
-            Ma hubtaa inaad rabto inaad dalbato sooryadan?
+            Ma hubtaa inaad dalbato sooryadan?
           </p>
           <ul className="text-muted mb-0" style={{ fontSize: 18, lineHeight: 1.6 }}>
             <li>
@@ -309,18 +309,15 @@ const Claim = () => {
               </span>
             </li>
             <li>
-              <strong>Serial:</strong> {loadingQr ? "…" : qrInfo?.serial_number || "—"}
-            </li>
-            <li>
               <strong>Lacagta:</strong>{" "}
               {!loadingQr &&
-              qrInfo?.amount !== undefined &&
-              qrInfo?.amount !== null &&
-              !Number.isNaN(Number(qrInfo.amount))
+                qrInfo?.amount !== undefined &&
+                qrInfo?.amount !== null &&
+                !Number.isNaN(Number(qrInfo.amount))
                 ? `${Number(qrInfo.amount)}`
                 : loadingQr
-                ? "…"
-                : "—"}
+                  ? "…"
+                  : "—"}
             </li>
           </ul>
         </ModalBody>
